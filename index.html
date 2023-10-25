@@ -17,7 +17,7 @@
                         Sandbox Tools
                         <br>
                         <span style="font-size:small;color:blue">
-                            [<a href="https://github.com/anthonypetersen/sandbox-tools" target="_blank">code</a>] 
+                            [<a href="https://github.com/anthonypetersen/drum-alphabet" target="_blank">code</a>] 
                         </span>
                     </h1> 
                     
@@ -26,42 +26,28 @@
                     
                 <ul class="nav nav-tabs" id="options" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Octokit</button>
+                        <button class="nav-link active" id="dice-tab" data-bs-toggle="tab" data-bs-target="#dice" type="button" role="tab" aria-controls="dice" aria-selected="true">Dice</button>
                     </li>
                   
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="documentation-tab" data-bs-toggle="tab" data-bs-target="#documentation" type="button" role="tab" aria-controls="documentation" aria-selected="false">Demo</button>
+                        <button class="nav-link" id="example-tab" data-bs-toggle="tab" data-bs-target="#example" type="button" role="tab" aria-controls="example" aria-selected="false">Example</button>
                     </li>
                 </ul>
                 
                 <div class="tab-content" id="optionsContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                
-                        <section id="introduction" class="mt-3">
-                            <p>
-                                URL
-                            </p>
-                        </section>
+                    <div class="tab-pane fade show active" id="dice" role="tabpanel" aria-labelledby="dice-tab">
                         
-                        <section id="usage">
+                        <section id="main">
                             
                             <div class="row">
-                                <h2>Testing usage of GitHub Octokit API</h2>
+                                <h2>Generating grooves from drum alphabet</h2>
 
                                 <div class="col-12">
 
                                     <form>
                                         <div class="form-group col-12">
-                                            <div>
-                                                <select name="modules" id="modules">
-                                                    <option value="module1Stage">Module 1</option>
-                                                    <option value="module2Stage">Module 2</option>
-                                                    <option value="module3Stage">Module 3</option>
-                                                    <option value="module4Stage">Module 4</option>
-                                                </select>
-                                            </div>
-                                            <br>
-                                            <button type="button" class="btn btn-primary mr-3" id="octokit-driver">Run</button>
+                                            <button type="button" class="btn btn-primary mr-3" id="dice-driver">Run</button>
+                                            <button type="button" class="btn btn-primary mr-3" id="groove-driver">Play Groove</button>
                                         </div>    
                                     </form>
                                         
@@ -69,11 +55,15 @@
                             </div>
                               
                         </section>
+
+                        <section id="results">
+
+                        </section>
                     </div>
                     
                     <div class="tab-pane fade" id="documentation" role="tabpanel" aria-labelledby="documentation-tab">
                         <section id="documentation-content" class="mt-3">
-                            here
+                            Content
                         </section>
                     </div>
                 </div>
