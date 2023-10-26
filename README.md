@@ -1,1 +1,2 @@
-anthonypetersen.github.io/drum-alphabet
+# Drum Alphabet
+https://anthonypetersen.github.io/drum-alphabet/
