@@ -48,6 +48,47 @@
                                         <div class="form-group col-12">
                                             <button type="button" class="btn btn-primary mr-3" id="dice-driver">Run</button>
                                             <button type="button" class="btn btn-primary mr-3" id="groove-driver">Play Groove</button>
+
+                                            <div class="container mt-5">
+                                               <!-- Row 1 -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-3">
+                                                        <label for="minHits" class="form-label">Minimum Hits:</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="number" class="form-control" id="minHits" value="6">
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <input type="checkbox" id="enableHits">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Row 2 -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-3">
+                                                        <label for="maxCombo" class="form-label">Maximum Combo:</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="number" class="form-control" id="maxCombo" value="2">
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <input type="checkbox" id="enableCombo">
+                                                    </div>
+                                                </div>
+
+                                                <!-- Row 3 -->
+                                                <div class="row mb-3">
+                                                    <div class="col-md-3">
+                                                        <label for="bpm" class="form-label">Beats Per Minute:</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="number" class="form-control" id="bpm" value="80">
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <input type="checkbox" id="enableBeats">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>    
                                     </form>
                                         
@@ -57,11 +98,11 @@
                         </section>
 
                         <section id="results">
-
+                            <canvas id="grooveCanvas" width="800" height="300"></canvas>
                         </section>
                     </div>
                     
-                    <div class="tab-pane fade" id="documentation" role="tabpanel" aria-labelledby="documentation-tab">
+                    <div class="tab-pane fade" id="example" role="tabpanel" aria-labelledby="example-tab">
                         <section id="documentation-content" class="mt-3">
                             Content
                         </section>
