@@ -1,3 +1,5 @@
+import Circle from './circle.js';
+
 let values = [
     {letter: "A", beats: [1, 0, 0, 0]},
     {letter: "B", beats: [0, 1, 0, 0]},
@@ -14,6 +16,10 @@ let values = [
     {letter: "M", beats: [1, 0, 1, 1]},
     {letter: "N", beats: [1, 1, 0, 1]}
 ];
+
+let kickCircles;
+let snareCircles;
+let ghostCircles;
 
 let groove;
 
@@ -61,6 +67,11 @@ const dice_driver = () => {
 }
 
 const visualize_groove = (groove) => {
+
+    snareCircles = [];
+    ghostCircles = [];
+    kickCircles = [];
+
     const canvas = document.getElementById("grooveCanvas");
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear previous drawings
@@ -75,18 +86,27 @@ const visualize_groove = (groove) => {
         // Top row for groove = 1
         if (value === 1) {
             yPos = rowHeight;
-            drawCircle(ctx, index * spacing + spacing, yPos, circleRadius);
+            let circle = drawCircle(ctx, index * spacing + spacing, yPos, circleRadius);
+            snareCircles.push(circle);
+        }
+        else {
+            snareCircles.push(null);
         }
         
         // Middle row for groove = 0
         if (value === 0) {
             yPos = 2 * rowHeight;
-            drawCircle(ctx, index * spacing + spacing, yPos, circleRadius);
+            let circle = drawCircle(ctx, index * spacing + spacing, yPos, circleRadius);
+            ghostCircles.push(circle);
+        }
+        else {
+            ghostCircles.push(null);
         }
 
         if(index % 4 === 0) {
             yPos = 3 * rowHeight;
-            drawCircle(ctx, index * spacing + spacing, yPos, circleRadius);
+            let circle = drawCircle(ctx, index * spacing + spacing, yPos, circleRadius);
+            kickCircles.push(circle);
         }
     });
 
@@ -94,9 +114,9 @@ const visualize_groove = (groove) => {
 }
 
 const drawCircle = (ctx, x, y, radius) => {
-    ctx.beginPath();
-    ctx.arc(x, y, radius, 0, 2 * Math.PI);
-    ctx.fill();
+    const circle = new Circle(x, y, radius, 'black');
+    circle.draw(ctx);
+    return circle;
 }
 
 function drawVerticalLines(ctx, canvas) {
@@ -121,6 +141,8 @@ const groove_driver = () => {
     }
 
     const beats_element = document.getElementById('bpm');
+    const canvas = document.getElementById("grooveCanvas");
+    const ctx = canvas.getContext("2d");
 
     
     const bpm = beats_element && beats_element.value;
@@ -142,12 +164,18 @@ const groove_driver = () => {
             setTimeout(() => {
                 // Play the bass drum on every 4th beat
                 if (index % 4 === 0) {
+                    kickCircles[index / 4].setColor("red");
+                    kickCircles[index / 4].draw(ctx);
                     kick();
                 }
         
                 if (value === 1) {
                     snare();
+                    snareCircles[index].setColor("red");
+                    snareCircles[index].draw(ctx);
                 } else if (value === 0) {
+                    ghostCircles[index].setColor("red");
+                    ghostCircles[index].draw(ctx);
                     ghost();
                 }
             }, index * quarterBeatDuration);
