@@ -1,1 +1,1 @@
-anthonypetersen@github.io/drum-alphabet
+anthonypetersen.github.io/drum-alphabet
