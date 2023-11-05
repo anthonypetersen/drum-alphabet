@@ -1,4 +1,19 @@
-import Circle from './circle.js';
+import { cube_driver } from './groove-cubes.js';
+import { drawCircle, drawVerticalLines } from './common.js';
+
+Promise.all([
+    loadAudioFile('audio/kick.wav').then(buffer => { kickBuffer = buffer; }),
+    loadAudioFile('audio/snare.wav').then(buffer => { snareBuffer = buffer; }),
+    loadAudioFile('audio/ghost.wav').then(buffer => { ghostBuffer = buffer; })
+]).then(() => {
+    console.log('All audio files preloaded');
+});
+
+function loadAudioFile(url) {
+    return fetch(url)
+        .then(response => response.arrayBuffer())
+        .then(data => audioCtx.decodeAudioData(data));
+}
 
 let values = [
     {letter: "A", beats: [1, 0, 0, 0]},
@@ -23,23 +38,10 @@ let ghostCircles;
 
 let groove;
 
+// add this to state
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 let kickBuffer, snareBuffer, ghostBuffer;
-
-Promise.all([
-    loadAudioFile('audio/kick.wav').then(buffer => { kickBuffer = buffer; }),
-    loadAudioFile('audio/snare.wav').then(buffer => { snareBuffer = buffer; }),
-    loadAudioFile('audio/ghost.wav').then(buffer => { ghostBuffer = buffer; })
-]).then(() => {
-    console.log('All audio files preloaded');
-});
-
-function loadAudioFile(url) {
-    return fetch(url)
-        .then(response => response.arrayBuffer())
-        .then(data => audioCtx.decodeAudioData(data));
-}
 
 function playBuffer(buffer) {
     const source = audioCtx.createBufferSource();
@@ -72,7 +74,7 @@ const visualize_groove = (groove) => {
     ghostCircles = [];
     kickCircles = [];
 
-    const canvas = document.getElementById("grooveCanvas");
+    const canvas = document.getElementById("alphabetCanvas");
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear previous drawings
 
@@ -113,24 +115,6 @@ const visualize_groove = (groove) => {
     drawVerticalLines(ctx, canvas); 
 }
 
-const drawCircle = (ctx, x, y, radius) => {
-    const circle = new Circle(x, y, radius, 'black');
-    circle.draw(ctx);
-    return circle;
-}
-
-function drawVerticalLines(ctx, canvas) {
-
-    const barWidth = canvas.width / 4;
-
-    for(let i = 1; i <= 3; i++) {
-        ctx.beginPath();
-        ctx.moveTo(barWidth * i, 0);
-        ctx.lineTo(barWidth * i, canvas.height);
-        ctx.strokeStyle = '#000';  // Black color for the line
-        ctx.stroke();
-    }
-}
 
 
 
@@ -141,7 +125,7 @@ const groove_driver = () => {
     }
 
     const beats_element = document.getElementById('bpm');
-    const canvas = document.getElementById("grooveCanvas");
+    const canvas = document.getElementById("alphabetCanvas");
     const ctx = canvas.getContext("2d");
 
     
@@ -150,13 +134,6 @@ const groove_driver = () => {
     const quarterBeatDuration = beatDuration / 4;
 
     const delay = 500;
-
-    let pattern = [
-        1, 0, 0, 1, 
-        1, 0, 0, 1, 
-        0, 1, 0, 1, 
-        1, 0, 0, 0
-    ]
 
     setTimeout(() => {
 
@@ -268,4 +245,8 @@ document.getElementById("enableHits").addEventListener("change", function() {
 
 document.getElementById("enableCombo").addEventListener("change", function() {
     document.getElementById('maxCombo').disabled = document.getElementById('enableCombo').checked
+});
+
+document.getElementById("cubes-driver").addEventListener("click", () => {
+    cube_driver();
 });
