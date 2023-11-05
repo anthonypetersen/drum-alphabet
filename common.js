@@ -49,7 +49,7 @@ export const renderNotation = (notation, element) => {
     stave.addClef('percussion').addTimeSignature('4/4');
     stave.setContext(context).draw();
 
-    let translation = transcribe(notation);
+    let translation = transcribe(notation, "groove");
 
     
     let firstNotes = translation[0];
@@ -105,6 +105,76 @@ export const renderNotation = (notation, element) => {
     if(beam2) beam2.setContext(context).draw();
     if(beam3) beam3.setContext(context).draw();
     if(beam4) beam4.setContext(context).draw();
+
+
+    const verticalSpace = 100;
+    const secondStaveYPosition = stave.getYForLine(5) + verticalSpace;
+
+    const secondStave = new Stave(10, secondStaveYPosition, 400);
+    secondStave.addClef('percussion').addTimeSignature('4/4');
+    secondStave.setContext(context).draw();
+
+    console.log(notation.fill);
+
+    // Transcribe the notation for the second measure
+    
+    let secondMeasureTranslation = transcribe(notation, "fill"); // Adjust this line as needed
+
+    let firstFill = secondMeasureTranslation[0];
+    let secondFill = secondMeasureTranslation[1];
+    let thirdFill = secondMeasureTranslation[2];
+    let fourthFill = secondMeasureTranslation[3];
+
+
+    let fillBeam1;
+    let fillBeam2;
+    let fillBeam3;
+    let fillBeam4;
+
+    if (firstFill.filter(note => !note.isRest()).length > 1) {
+        fillBeam1 = new Beam(firstFill.filter(note => !note.isRest()));
+    }
+
+    if (secondFill.filter(note => !note.isRest()).length > 1) {
+        fillBeam2 = new Beam(secondFill.filter(note => !note.isRest()));
+    }
+
+    if (thirdFill.filter(note => !note.isRest()).length > 1) {
+        fillBeam3 = new Beam(thirdFill.filter(note => !note.isRest()));
+    }
+
+    if (fourthFill.filter(note => !note.isRest()).length > 1) {
+        fillBeam4 = new Beam(fourthFill.filter(note => !note.isRest()));
+    }
+
+    // Create a second voice and add the notes from the second measure
+
+    // Combine the notes from the second measure
+    let secondMeasureNotes = [
+        ...firstFill,
+        ...secondFill,
+        ...thirdFill,
+        ...fourthFill
+        ];
+    
+    const secondVoice = new Voice({
+        num_beats: 4,
+        beat_value: 4,
+    }).addTickables(secondMeasureNotes);
+
+    // You might need to create beams for the second measure too, similar to how you did for the first measure
+
+    // Format and justify the notes for the second voice to the second stave's width
+    new Formatter().joinVoices([secondVoice]).format([secondVoice], 330);
+
+    // Render the second voice to the second stave
+    secondVoice.draw(context, secondStave);
+
+    if(fillBeam1) fillBeam1.setContext(context).draw();
+    if(fillBeam2) fillBeam2.setContext(context).draw();
+    if(fillBeam3) fillBeam3.setContext(context).draw();
+    if(fillBeam4) fillBeam4.setContext(context).draw();
+    
 }
 
 export const showGroove = (groove) => {

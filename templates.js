@@ -33,31 +33,46 @@ const translate = (notation) => {
 
     for(let i = 0; i < 4; i++) {
         let note = [];
-        if(notation.hiHat[i] || notation.kickSnare[i]) {
-            pattern += "1";
-
-            if(notation.hiHat[i]) {
-                note.push(HIHAT);
+        
+        if(notation.hiHat && notation.kickSnare) {
+            if(notation.hiHat[i] || notation.kickSnare[i]) {
+                pattern += "1";
+    
+                if(notation.hiHat[i]) {
+                    note.push(HIHAT);
+                }
+                
+                if(notation.kickSnare[i] === 1) {
+                    note.push(KICK);
+                }
+    
+                if(notation.kickSnare[i] === 2) {
+                    note.push(SNARE);
+                }
+    
+                if(notation.kickSnare[i] === 3) {
+                    note.push(KICK);
+                    note.push(SNARE);
+                }
+    
+                notes.push(note);
             }
-            
-            if(notation.kickSnare[i] === 1) {
-                note.push(KICK);
+            else {
+                pattern += "0";
             }
-
-            if(notation.kickSnare[i] === 2) {
-                note.push(SNARE);
-            }
-
-            if(notation.kickSnare[i] === 3) {
-                note.push(KICK);
-                note.push(SNARE);
-            }
-
-            notes.push(note);
         }
-        else {
-            pattern += "0";
-        }
+
+        if(notation.fill) {
+            if(notation.fill[i]) {
+                pattern += "1";
+                note.push(RACK);
+                notes.push(note);
+            }
+            else {
+                pattern += "0";
+            }
+        
+        } 
     }
 
     switch (pattern) {
@@ -202,7 +217,7 @@ const translate = (notation) => {
     return notes;
 }
 
-export const transcribe = (notation) => {
+export const transcribe = (notation, type) => {
     
     
     let translation = [];
@@ -210,9 +225,15 @@ export const transcribe = (notation) => {
     for(let i = 0; i < 4; i++) {
 
         let notationSplit = {}
-        
-        notationSplit.hiHat = notation.hiHat.slice(i * 4, (i + 1) * 4);
-        notationSplit.kickSnare = notation.kickSnare.slice(i * 4, (i + 1) * 4);
+
+        if(type === "groove") {
+            notationSplit.hiHat = notation.hiHat.slice(i * 4, (i + 1) * 4);
+            notationSplit.kickSnare = notation.kickSnare.slice(i * 4, (i + 1) * 4);
+        }
+
+        if(type === "fill") {
+            notationSplit.fill = notation.fill.slice(i * 4, (i + 1) * 4);
+        }
 
         translation.push(translate(notationSplit));
     }
