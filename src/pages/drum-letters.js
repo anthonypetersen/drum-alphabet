@@ -1,6 +1,6 @@
 import constants from "../shared/constants.js";
-import { state } from "../shared/common.js";
-import { drawCircle, drawVerticalLines } from '../shared/common.js';
+import { state, drawCircle, drawVerticalLines } from '../shared/common.js';
+import { kick, snare, ghost } from '../shared/audio.js';
 
 let kickCircles;
 let snareCircles;
@@ -9,13 +9,55 @@ let ghostCircles;
 let groove;
 
 export const letter_driver = () => {
-    dice_driver();
-}
-
-const dice_driver = () => {
     let groove = generate_combo();
     state.updateState({groove: groove});
     visualize_groove(groove);
+}
+
+export const groove_driver = () => {
+
+    let audioContext = state.getState().audioContext;
+
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+
+    const beats_element = document.getElementById('bpm');
+    const canvas = document.getElementById("alphabetCanvas");
+    const ctx = canvas.getContext("2d");
+
+    
+    const bpm = beats_element && beats_element.value;
+    const beatDuration = 60000 / bpm;
+    const quarterBeatDuration = beatDuration / 4;
+
+    const delay = 500;
+
+    setTimeout(() => {
+
+        state.getState().groove.forEach((value, index) => {
+            setTimeout(() => {
+
+                const { ghostCircles, kickCircles, snareCircles } = state.getState();
+                // Play the bass drum on every 4th beat
+                if (index % 4 === 0) {
+                    kickCircles[index / 4].setColor("red");
+                    kickCircles[index / 4].draw(ctx);
+                    kick();
+                }
+        
+                if (value === 1) {
+                    snare();
+                    snareCircles[index].setColor("red");
+                    snareCircles[index].draw(ctx);
+                } else if (value === 0) {
+                    ghostCircles[index].setColor("red");
+                    ghostCircles[index].draw(ctx);
+                    ghost();
+                }
+            }, index * quarterBeatDuration);
+        });
+    }, delay);
 }
 
 const visualize_groove = (groove) => {
