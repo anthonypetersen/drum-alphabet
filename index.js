@@ -1,5 +1,5 @@
-import { letter_driver, groove_driver } from './src/pages/drum-letters.js';
-import { cube_driver } from './src/pages/groove-cubes.js';
+import { letter_driver, groove_driver } from './src/pages/letters.js';
+import { cube_driver, cube_player } from './src/pages/cubes.js';
 import { audio_driver } from './src/shared/audio.js';
 import { state } from './src/shared/common.js';
 
@@ -12,6 +12,7 @@ audio_driver();
 document.getElementById('dice-driver').addEventListener('click', letter_driver);
 document.getElementById('groove-driver').addEventListener('click', groove_driver);
 document.getElementById("cubes-driver").addEventListener('click', cube_driver);
+document.getElementById("cubes-player").addEventListener('click', cube_player);
 
 document.getElementById("enableHits").addEventListener("change", function() {
     document.getElementById('minHits').disabled = document.getElementById('enableHits').checked
