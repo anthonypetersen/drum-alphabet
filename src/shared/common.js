@@ -241,7 +241,7 @@ export const showGroove = (groove) => {
     // drawVerticalLines(ctx, canvas);    
 }
 
-const translate = (notation) => {
+const translate = (notation, flag = false) => {
 
     const dotted = (staveNote, noteIndex = -1) => {
         if (noteIndex < 0) {
@@ -294,7 +294,12 @@ const translate = (notation) => {
         if(notation.fill) {
             if(notation.fill[i]) {
                 pattern += "1";
-                note.push(constants.RACK);
+                if(flag) {
+                    note.push(constants.RACK);
+                }
+                else {
+                    note.push(constants.FLOOR);
+                }
                 notes.push(note);
             }
             else {
@@ -463,8 +468,14 @@ export const transcribe = (notation, type) => {
         if(type === "fill") {
             notationSplit.fill = notation.fill.slice(i * 4, (i + 1) * 4);
         }
-
-        translation.push(translate(notationSplit));
+        if(i == 0 || i == 1) {
+            translation.push(translate(notationSplit, true));
+        
+        }
+        else {
+            translation.push(translate(notationSplit));
+        
+        }
     }
     
     return translation;

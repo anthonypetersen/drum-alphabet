@@ -65,7 +65,6 @@ export const cube_player = () => {
         ...state.getState().cubeFill[0].tickables
     ];
 
-
     play(groove);
 }
 
@@ -97,6 +96,8 @@ const play = (groove) => {
                 return state.getState().hiHatBuffer;
             case constants.RACK:
                 return state.getState().midTomBuffer;
+            case constants.FLOOR:
+                return state.getState().lowTomBuffer;
           default:
             return null; // Return null or undefined if there's no buffer for the note
         }
