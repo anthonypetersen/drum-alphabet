@@ -480,8 +480,3 @@ export const transcribe = (notation, type) => {
     
     return translation;
 }
-
-export const extractNotation = (staveNotes) => {
-
-    
-}
