@@ -1,12 +1,15 @@
 import { state } from './common.js';
-let kickBuffer, snareBuffer, ghostBuffer;
+let kickBuffer, snareBuffer, ghostBuffer, hiHatBuffer, midTomBuffer;
 
 export const audio_driver = () => {
     Promise.all([
         loadAudioFile('audio/kick.wav').then(buffer => { kickBuffer = buffer; }),
         loadAudioFile('audio/snare.wav').then(buffer => { snareBuffer = buffer; }),
-        loadAudioFile('audio/ghost.wav').then(buffer => { ghostBuffer = buffer; })
+        loadAudioFile('audio/ghost.wav').then(buffer => { ghostBuffer = buffer; }),
+        loadAudioFile('audio/hihat.wav').then(buffer => { hiHatBuffer = buffer; }),
+        loadAudioFile('audio/midtom.wav').then(buffer => { midTomBuffer = buffer; })
     ]).then(() => {
+        state.updateState({ kickBuffer, snareBuffer, ghostBuffer, hiHatBuffer, midTomBuffer });
         console.log('All audio files preloaded');
     });
 }
@@ -39,4 +42,12 @@ export const snare = () => {
 
 export const ghost = () => {
     playBuffer(ghostBuffer);
+}
+
+export const hiHat = () => {
+    playBuffer(hiHatBuffer);
+}
+
+export const midTom = () => {
+    playBuffer(midTomBuffer);
 }

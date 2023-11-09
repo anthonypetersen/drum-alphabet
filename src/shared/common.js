@@ -60,7 +60,11 @@ export const renderNotation = (notation, element) => {
     let secondNotes = translation[1];
     let thirdNotes = translation[2];
     let fourthNotes = translation[3];
+
+    let notes = [...firstNotes, ...secondNotes, ...thirdNotes, ...fourthNotes];
     
+
+    // generate beams
     let beam1;
     let beam2;
     let beam3;
@@ -81,9 +85,6 @@ export const renderNotation = (notation, element) => {
     if (fourthNotes.filter(note => !note.isRest()).length > 1) {
         beam4 = new Beam(fourthNotes.filter(note => !note.isRest()));
     }
-
-
-    let notes = [...firstNotes, ...secondNotes, ...thirdNotes, ...fourthNotes];
     
     console.log(notation.hiHat);
     console.log(notation.kickSnare);
@@ -96,6 +97,7 @@ export const renderNotation = (notation, element) => {
         }).addTickables(notes)
     ];
 
+    state.updateState({ cubeGroove: voices });
     
     // Format and justify the notes to 400 pixels.
     new Formatter().joinVoices(voices).format(voices, 330);
@@ -111,12 +113,18 @@ export const renderNotation = (notation, element) => {
     if(beam4) beam4.setContext(context).draw();
 
 
+
+
+
+
+
     const verticalSpace = 100;
     const secondStaveYPosition = stave.getYForLine(5) + verticalSpace;
 
     const secondStave = new Stave(10, secondStaveYPosition, 400);
     secondStave.addClef('percussion').addTimeSignature('4/4');
     secondStave.setContext(context).draw();
+
 
     console.log(notation.fill);
 
@@ -166,6 +174,8 @@ export const renderNotation = (notation, element) => {
         beat_value: 4,
     }).addTickables(secondMeasureNotes);
 
+    state.updateState({ cubeFill: [secondVoice] });
+
     // You might need to create beams for the second measure too, similar to how you did for the first measure
 
     // Format and justify the notes for the second voice to the second stave's width
@@ -179,6 +189,7 @@ export const renderNotation = (notation, element) => {
     if(fillBeam3) fillBeam3.setContext(context).draw();
     if(fillBeam4) fillBeam4.setContext(context).draw();
     
+    console.log();
 }
 
 export const showGroove = (groove) => {
@@ -457,4 +468,9 @@ export const transcribe = (notation, type) => {
     }
     
     return translation;
+}
+
+export const extractNotation = (staveNotes) => {
+
+    
 }
